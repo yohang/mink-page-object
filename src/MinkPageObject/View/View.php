@@ -106,6 +106,28 @@ class View implements ViewInterface
     }
 
     /**
+     * @param string $contains
+     *
+     * @return View
+     */
+    public function initWithContains($contains)
+    {
+        $this->page = $this->session->getPage();
+
+        $nodes = array_filter(
+            $this->session->getPage()->findAll('css', $this->root),
+            function(NodeElement $node) use ($contains) {
+                return false !== strpos($node->getText(), $contains);
+            }
+        );
+
+        $this->rootElement = array_pop($nodes);
+        $this->inited = true;
+
+        return $this;
+    }
+
+    /**
      * @{inheritDoc}
      */
     public function getPage()
@@ -171,7 +193,7 @@ class View implements ViewInterface
             $this->init();
         }
 
-        return call_user_func_array(array($this->getPage(), 'find'), $this->parts[$name]);
+        return call_user_func_array(array($this->rootElement, 'find'), $this->parts[$name]);
     }
 
     /**
@@ -183,7 +205,7 @@ class View implements ViewInterface
             $this->init();
         }
 
-        return call_user_func_array(array($this->getPage(), 'findAll'), $this->parts[$name]);
+        return call_user_func_array(array($this->rootElement, 'findAll'), $this->parts[$name]);
     }
 
     /**
@@ -196,6 +218,20 @@ class View implements ViewInterface
         }
 
         return $this->children[$name];
+    }
+
+    /**
+     * @param string         $name
+     * @param string         $contains
+     *
+     * @return ViewInterface
+     */
+    public function getChildContaining($name, $contains)
+    {
+        $child = clone $this->children[$name];
+        $child->initWithContains($contains);
+
+        return $child;
     }
 
     /**
@@ -224,11 +260,34 @@ class View implements ViewInterface
     /**
      * @{inheritDoc}
      */
-    public function waitFor($main, $timeout = 20000)
+    public function waitFor($name, $timeout = 20000)
     {
-        $selector = $this->parts[$main][1];
+        if (!$this->inited) {
+            $this->init();
+        }
+
+        $selector = $this->parts[$name][1];
 
         $this->session->wait($timeout, sprintf('$("%s:visible").length > 0', $selector));
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @param int $timeout
+     * @return View
+     */
+    public function waitForValueEquals($name, $value, $timeout = 20000)
+    {
+        if (!$this->inited) {
+            $this->init();
+        }
+
+        $selector = $this->parts[$name][1];
+
+        $this->session->wait($timeout, sprintf('$("%s:visible").val() === "%s"', $selector, $value));
 
         return $this;
     }
