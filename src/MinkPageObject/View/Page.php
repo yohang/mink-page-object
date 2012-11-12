@@ -5,7 +5,9 @@ namespace MinkPageObject\View;
 use Behat\Mink\Session;
 
 /**
+ * The page class.
  *
+ * A Page is a user-defined view with an URL.
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
@@ -35,6 +37,8 @@ abstract class Page extends AbstractView
     }
 
     /**
+     * Visits the page
+     *
      * @return Page
      */
     public function visit()
@@ -58,6 +62,8 @@ abstract class Page extends AbstractView
     }
 
     /**
+     * Returns the page full URL
+     *
      * @return string
      */
     public function getUrl()

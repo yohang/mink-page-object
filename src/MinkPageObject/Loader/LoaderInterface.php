@@ -5,7 +5,7 @@ namespace MinkPageObject\Loader;
 use Behat\Mink\Driver\DriverInterface;
 
 /**
- * Classe de chargement des drivers
+ * Mink driver loader interface
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */

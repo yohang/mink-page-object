@@ -5,7 +5,7 @@ namespace MinkPageObject\Loader;
 use Behat\Mink\Driver\Selenium2Driver;
 
 /**
- * Loader du driver selenium2
+ * Selenium2 Mink driver loader
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */

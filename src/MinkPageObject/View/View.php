@@ -7,13 +7,15 @@ use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Element\NodeElement;
 
 /**
- * Vue de base
+ * Represents a View
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class View
+class View implements ViewInterface
 {
     /**
+     * The Mink Session
+     *
      * @var Session
      */
     protected $session;
@@ -24,21 +26,28 @@ class View
     protected $page;
 
     /**
+     * The DOM root element selector
      * @var string
      */
     protected $root;
 
     /**
+     * The DOM root element
+     *
      * @var NodeElement
      */
     protected $rootElement;
 
     /**
+     * View parts definition
+     *
      * @var array
      */
     protected $parts = array();
 
     /**
+     * Child views
+     *
      * @var array<ViewInterface>
      */
     protected $children = array();
@@ -78,7 +87,7 @@ class View
     }
 
     /**
-     * @return View
+     * @{inheritDoc}
      */
     public function init()
     {
@@ -97,7 +106,7 @@ class View
     }
 
     /**
-     * @return \Behat\Mink\Element\DocumentElement
+     * @{inheritDoc}
      */
     public function getPage()
     {
@@ -105,9 +114,7 @@ class View
     }
 
     /**
-     * @param string $root
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function setRoot($root)
     {
@@ -117,7 +124,7 @@ class View
     }
 
     /**
-     * @return string
+     * @{inheritDoc}
      */
     public function getRoot()
     {
@@ -125,11 +132,7 @@ class View
     }
 
     /**
-     * @param string $name
-     * @param string $locator
-     * @param string $type
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function add($name, $locator, $type = 'css')
     {
@@ -139,10 +142,7 @@ class View
     }
 
     /**
-     * @param string $name
-     * @param string $root
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function addChild($name, $root)
     {
@@ -155,7 +155,7 @@ class View
     }
 
     /**
-     * @return View
+     * @{inheritDoc}
      */
     public function end()
     {
@@ -163,9 +163,7 @@ class View
     }
 
     /**
-     * @param string      $name
-     *
-     * @return NodeElement
+     * @{inheritDoc}
      */
     public function get($name)
     {
@@ -177,9 +175,7 @@ class View
     }
 
     /**
-     * @param $name
-     *
-     * @return array<NodeElement>
+     * @{inheritDoc}
      */
     public function all($name)
     {
@@ -191,20 +187,19 @@ class View
     }
 
     /**
-     * @param string $name
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function getChild($name)
     {
+        if (!$this->inited) {
+            $this->init();
+        }
+
         return $this->children[$name];
     }
 
     /**
-     * @param string $name
-     * @param int    $index
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function getChildByIndex($name, $index)
     {
@@ -216,19 +211,19 @@ class View
     }
 
     /**
-     * @param string $name
-     *
-     * @return View
+     * @{inheritDoc}
      */
     public function getShared($name)
     {
         $view = $this->container[$name];
         $view->parent = $this;
-        $view->init();
 
         return $view;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     public function waitFor($main, $timeout = 20000)
     {
         $selector = $this->parts[$main][1];
