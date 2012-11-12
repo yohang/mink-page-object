@@ -45,6 +45,9 @@ abstract class Page extends AbstractView
     {
         $this->init();
         $this->session->visit($this->getUrl());
+        if (null === $this->rootElement) {
+            $this->init();
+        }
 
         return $this;
     }
