@@ -69,7 +69,7 @@ interface ViewInterface
 
     /**
      * Returns a defined DOM element
-     * @param string      $name
+     * @param string $name
      *
      * @return \Behat\Mink\Element\NodeElement
      */

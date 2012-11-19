@@ -221,8 +221,8 @@ class View implements ViewInterface
     }
 
     /**
-     * @param string         $name
-     * @param string         $contains
+     * @param string $name
+     * @param string $contains
      *
      * @return ViewInterface
      */
@@ -276,7 +276,7 @@ class View implements ViewInterface
     /**
      * @param $name
      * @param $value
-     * @param int $timeout
+     * @param  int  $timeout
      * @return View
      */
     public function waitForValueEquals($name, $value, $timeout = 20000)

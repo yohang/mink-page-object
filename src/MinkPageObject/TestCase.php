@@ -74,7 +74,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Returns a view
      *
-     * @param  string $view
+     * @param string $view
      *
      * @return View\ViewInterface
      */
@@ -104,7 +104,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         foreach (self::$config['views'] as $view => $class) {
             self::$container[$view] = self::$container->share(function($c) use ($session, $baseUrl, $class) {
-
                 return new $class($c, $session, $baseUrl);
             });
         }

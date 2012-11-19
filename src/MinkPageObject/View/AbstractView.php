@@ -22,5 +22,5 @@ abstract class AbstractView extends View
     /**
      * Abstract Method use de describe and define the View
      */
-    public abstract function configure();
+    abstract public function configure();
 }
