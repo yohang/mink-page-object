@@ -253,7 +253,6 @@ class View implements ViewInterface
     public function getShared($name)
     {
         $view = $this->container[$name];
-        $view->parent = $this;
 
         return $view;
     }
