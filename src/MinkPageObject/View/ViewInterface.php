@@ -33,11 +33,18 @@ interface ViewInterface
     public function setRoot($root);
 
     /**
-     * Return the Root DOM element
+     * Return the Root DOM element selector
      *
      * @return string
      */
     public function getRoot();
+
+    /**
+     * Return the Root DOM element
+     *
+     * @return string
+     */
+    public function getRootElement();
 
     /**
      * Adds a DOM element to view

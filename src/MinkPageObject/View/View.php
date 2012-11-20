@@ -91,7 +91,7 @@ class View implements ViewInterface
      */
     public function init()
     {
-        $this->page = $this->session->getPage();
+        $this->page = (null === $this->parent) ? $this->session->getPage() : $this->parent->getRootElement();
 
         if (null !== $this->index) {
             $this->rootElement = $this->page->findAll('css', $this->root);
@@ -121,7 +121,7 @@ class View implements ViewInterface
             }
         );
 
-        $this->rootElement = array_pop($nodes);
+        $this->page = $this->rootElement = array_pop($nodes);
         $this->inited = true;
 
         return $this;
@@ -241,6 +241,7 @@ class View implements ViewInterface
     {
         $child = clone $this->children[$name];
         $child->index = $index;
+        $child->parent = $this;
         $child->init();
 
         return $child;
@@ -290,5 +291,17 @@ class View implements ViewInterface
         $this->session->wait($timeout, sprintf('$("%s:visible").val() === "%s"', $selector, $value));
 
         return $this;
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    public function getRootElement()
+    {
+        if (!$this->inited) {
+            $this->init();
+        }
+
+        return $this->rootElement;
     }
 }
